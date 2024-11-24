@@ -204,12 +204,16 @@
                 </b>
                 <br />
                 <br />
-                To train critique models capable of delivering step-level supervision and constructive feedback for reasoning, we introduce AutoMathCritique—an automated and scalable framework for collecting critique data.<br/>
-                This framework consists of three main stages: flawed reasoning path construction, critique generation, and data filtering. Using AutoMathCritique, we create a dataset containing 76321 samples named MathCritique-76k.
+                To train critique models capable of delivering step-level supervision and constructive feedback for
+                reasoning, we introduce AutoMathCritique—an automated and scalable framework for collecting critique
+                data.<br />
+                This framework consists of three main stages: flawed reasoning path construction, critique generation,
+                and data filtering. Using AutoMathCritique, we create a dataset containing 76321 samples named
+                MathCritique-76k.
               </p>
             </div>
-            <br/>
-            
+            <br />
+
             <b>Case</b>
             <center>
               <div class="content has-text-justified">
@@ -306,7 +310,12 @@
               </tr>
             </table>
             <p>
-              Test-time evaluation results of critique models on GSM8K and MATH. "Acc" represents accuracy; "Discrimin." refers to the accuracy of determining whether a reasoning path contains errors; "Helpfulness" indicates the ability of critique models to provide assistance for an incorrect reasoning path. The "No Critic" baseline represents the standalone performance of the actor reasoning model. Our 8B critique model outperforms GPT-3.5-Turbo, while the 70B critique model achieves performance close to the GPT-4 series models.
+              Test-time evaluation results of critique models on GSM8K and MATH. "Acc" represents accuracy; "Discrimin."
+              refers to the accuracy of determining whether a reasoning path contains errors; "Helpfulness" indicates
+              the ability of critique models to provide assistance for an incorrect reasoning path. The "No Critic"
+              baseline represents the standalone performance of the actor reasoning model. Our 8B critique model
+              outperforms GPT-3.5-Turbo, while the 70B critique model achieves performance close to the GPT-4 series
+              models.
             </p>
             <center>
               <img src="static/images/difficulty_disrtibution.pdf-1-8.jpg" alt="Mixed Video-Image Finetuning"
@@ -314,11 +323,41 @@
             </center>
             <div class="level-set has-text-justified">
               <p>
-                To construct the reasoning process in our two-player setting, First, we train critique models through super-vised fine-tuning with the collected MathCritique-76k.In this way, we can obtain a critique model that provides step-level supervision and constructive feedback on reasoning paths for actor models.We then train reasoning models in our two-player setting. We mixed reasoning data and refinement data in the training set to enable the model to possess reasoning abilities while also effectively refining based on critique feedback.
-                <br/>
-                <br/>
-                Here are our findings in our test-time improvement experiments:              </p>
+                To construct the reasoning process in our two-player setting, First, we train critique models through
+                super-vised fine-tuning with the collected MathCritique-76k.In this way, we can obtain a critique model
+                that provides step-level supervision and constructive feedback on reasoning paths for actor models.We
+                then train reasoning models in our two-player setting. We mixed reasoning data and refinement data in
+                the training set to enable the model to possess reasoning abilities while also effectively refining
+                based on critique feedback.
+                <br />
+                <br />
+                Here are our findings in our test-time improvement experiments:
+              </p>
             </div>
+            <h3 class="title is-4">Critique models are highly effective at identifying the correctness of reasoning,
+              offering constructive feedback for erroneous responses, and improving the overall accuracy of the actor.
+            </h3>
+            <p>
+              We compare our critique models with SOTA models used as critics, and the results are presented in Table 2.
+              We observe that compared to current state-of-the-art (SOTA) models, our 8B critique model significantly
+              outperforms GPT-3.5, while our Llama3-Critic-70B model achieves performance comparable to GPT-4 series
+              models.
+            </p>
+            <h3 class="title is-4">Critique models assist the actor in better handling challenging queries.
+            </h3>
+            <p>
+              The results are illustrated in Figure . is evident that on both the training and test sets of GSM8K and
+              MATH, critique models provide minimal benefit for simpler queries, as the actor model can independently
+              perform well on these cases. However, for more challenging problems, critique models offer significant
+              support, resulting in the overall improved performance. </p>
+            <h3 class="title is-4">Scaling up inference-time computation consistently improves reasoning performance.
+            </h3>
+            <p>
+              We investigate whether incorporating critique models can further elevate the reasoning performance ceiling
+              as test-time computation scales.As shown in Figure , without critique models, Maj@K performance improves
+              with increased computation but quickly plateau.In contrast, when critique models are utilized during
+              test-time, performance surpasses the baseline by a significant margin under the same computation
+              budget—showing a 12.4% improvement on GSM8K and a 14.8% improvement on MATH. </p>
           </div>
         </div>
       </div>
@@ -327,45 +366,77 @@
 
 
 
-  <!-- Image carousel -->
-  <section class="hero is-small">
-    <div class="hero-body">
-      <div class="container">
-        <div id="results-carousel" class="carousel results-carousel">
-          <div class="item">
-            <!-- Your image here -->
-            <img src="static/images/case_study_1.pdf-1-10.jpg" alt="MY ALT TEXT" />
-            <h2 class="subtitle has-text-centered">
-              First image description.
+
+  <section class="section hero is-small is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full">
+          <div class="content">
+            <h2 class="title is-3">Critique-in-the-loop Self-Improvement for Better Reasoning Models
             </h2>
-          </div>
-          <div class="item">
-            <!-- Your image here -->
-            <img src="static/images/case_study_2.pdf-1-9.jpg" alt="MY ALT TEXT" />
-            <h2 class="subtitle has-text-centered">
-              Second image description.
-            </h2>
-          </div>
-          <div class="item">
-            <!-- Your image here -->
-            <img src="static/images/case_study_1.pdf-1-10.jpg" alt="MY ALT TEXT" />
-            <h2 class="subtitle has-text-centered">
-              First image description.
-            </h2>
-          </div>
-          <div class="item">
-            <!-- Your image here -->
-            <img src="static/images/case_study_2.pdf-1-9.jpg" alt="MY ALT TEXT" />
-            <h2 class="subtitle has-text-centered">
-              Second image description.
-            </h2>
+
+
+            <p>
+              Motivated by the test-time findings in Test-time improve that critique models significantly aid in solving
+              challenging problems, and that they substantially raise the reaosning performance ceiling when scaling up
+              computation, we integrate the critique-based supervision into the actor model’s iterative exploration and
+              learning process. We introduce a critique-in-the-loop self-improvement method,which scales up exploration
+              computation on challenging queries and leads to the development of stronger reasoning models. </p>
+            <!-- 公式todu -->
+            <center>
+              <img src="static/images/self_improve_iteration.pdf-1-4.jpg" alt="Mixed Video-Image Finetuning"
+                class="center-image blend-img-background" />
+            </center>
+            <div class="level-set has-text-justified">
+              <p>
+                The evaluating results of critique-in-the-loop self-improvement. "SI" in the figure means
+                self-improvement.
+                Compared to the vanilla self-improvement approach, our method achieves significant performance
+                improvements, particularly at larger N values.
+                <br />
+                <br />
+                Here are our main findings :
+              </p>
+            </div>
+            <h3 class="title is-4">Critique-in-the-loop self-improvement consistently improves reasoning performance.
+            </h3>
+            <p>
+              The evaluating results of our method are shown in Figure 6. We can observe that: (1) Increasing the number
+              of samples during exploration improves performance, with the performance upper bound rising accordingly,
+              underscoring the benefits of enhanced exploration computation. (2) Our method consistently outperforms
+              vanilla self-improvement with stable and significant performance gains, especially when the sample number
+              N is larger. </p>
+              <center>
+                <img src="static/images/difficulty_propotion.pdf-1-7.jpg" alt="Mixed Video-Image Finetuning"
+                  class="center-image blend-img-background" />
+                  <p>The difference in the proportion of training data across different difficulty levels obtained from the exploration steps of the critique-in-the-loop self-improvement method compared to the data obtained from the exploration steps of the vanilla self-improvement method. On both datasets, our method increases the proportion of difficult problems in the training set while reducing the proportion of simpler problems.</p>
+              </center>
+              <center>
+                <img src="static/images/train_time_difficult_acc.pdf-1-1.jpg" alt="Mixed Video-Image Finetuning"
+                  class="center-image blend-img-background" />
+                  <p>The performance differences between our method and vanilla self-improvement on test sets of varying difficulty. While our method slightly outperforms the vanilla approach on simpler problems, it achieves significantly greater improvements on harder problems.</p>
+              </center>
+    
+            <h3 class="title is-4">Critique models assist the actor in better handling challenging queries.
+            </h3>
+            <p>
+              The results are illustrated in Figure . is evident that on both the training and test sets of GSM8K and
+              MATH, critique models provide minimal benefit for simpler queries, as the actor model can independently
+              perform well on these cases. However, for more challenging problems, critique models offer significant
+              support, resulting in the overall improved performance. </p>
+            <h3 class="title is-4">Scaling up inference-time computation consistently improves reasoning performance.
+            </h3>
+            <p>
+              We investigate whether incorporating critique models can further elevate the reasoning performance ceiling
+              as test-time computation scales.As shown in Figure , without critique models, Maj@K performance improves
+              with increased computation but quickly plateau.In contrast, when critique models are utilized during
+              test-time, performance surpasses the baseline by a significant margin under the same computation
+              budget—showing a 12.4% improvement on GSM8K and a 14.8% improvement on MATH. </p>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <!-- End image carousel -->
-
 
 
 
