@@ -175,17 +175,6 @@
           </div>
         </div>
       </div>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          <div class="content has-text-justified">
-            <img src="static/images/AutoMathCritique.pdf-1-12.jpg" alt="MY ALT TEXT" />
-          </div>
-          <p>
-            The overview of AutoMathCritique framework. It has three main steps: flawed reasoning path construction,
-            critique generation, data filtering.
-          </p>
-        </div>
-      </div>
     </div>
   </section>
   <!-- End paper abstract -->
@@ -200,17 +189,34 @@
               Step-level Critique Data
             </h2>
             <center>
-              <img src="static/images/train-test-flowchart.png" alt="Mixed Video-Image Finetuning"
-                class="center-image blend-img-background" />
+              <div class="content has-text-justified">
+                <img src="static/images/AutoMathCritique.pdf-1-12.jpg" alt="MY ALT TEXT" />
+              </div>
+              <p>
+                The overview of AutoMathCritique framework. It has three main steps: flawed reasoning path construction,
+                critique generation, data filtering.
+              </p>
             </center>
+            <br />
             <div class="level-set has-text-justified">
               <p>
-                111
-                111
-                111
-                111
+                <b>TL'DR
+                </b>
+                <br />
+                <br />
+                To train critique models capable of delivering step-level supervision and constructive feedback for reasoning, we introduce AutoMathCritique—an automated and scalable framework for collecting critique data.<br/>
+                This framework consists of three main stages: flawed reasoning path construction, critique generation, and data filtering. Using AutoMathCritique, we create a dataset containing 76321 samples named MathCritique-76k.
               </p>
             </div>
+            <br/>
+            
+            <b>Case</b>
+            <center>
+              <div class="content has-text-justified">
+                <img src="static/images/case_study_1.pdf-1-10.jpg" alt="MY ALT TEXT" />
+              </div>
+              <p>Figure 2: example of the response, critique, and refinement process in the two-player setting.</p>
+            </center>
           </div>
         </div>
       </div>
@@ -299,18 +305,19 @@
                 <td>23.9%</td>
               </tr>
             </table>
-
+            <p>
+              Test-time evaluation results of critique models on GSM8K and MATH. "Acc" represents accuracy; "Discrimin." refers to the accuracy of determining whether a reasoning path contains errors; "Helpfulness" indicates the ability of critique models to provide assistance for an incorrect reasoning path. The "No Critic" baseline represents the standalone performance of the actor reasoning model. Our 8B critique model outperforms GPT-3.5-Turbo, while the 70B critique model achieves performance close to the GPT-4 series models.
+            </p>
             <center>
               <img src="static/images/difficulty_disrtibution.pdf-1-8.jpg" alt="Mixed Video-Image Finetuning"
                 class="center-image blend-img-background" />
             </center>
             <div class="level-set has-text-justified">
               <p>
-                111
-                111
-                111
-                111
-              </p>
+                To construct the reasoning process in our two-player setting, First, we train critique models through super-vised fine-tuning with the collected MathCritique-76k.In this way, we can obtain a critique model that provides step-level supervision and constructive feedback on reasoning paths for actor models.We then train reasoning models in our two-player setting. We mixed reasoning data and refinement data in the training set to enable the model to possess reasoning abilities while also effectively refining based on critique feedback.
+                <br/>
+                <br/>
+                Here are our findings in our test-time improvement experiments:              </p>
             </div>
           </div>
         </div>
