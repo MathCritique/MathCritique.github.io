@@ -417,22 +417,120 @@
                   <p>The performance differences between our method and vanilla self-improvement on test sets of varying difficulty. While our method slightly outperforms the vanilla approach on simpler problems, it achieves significantly greater improvements on harder problems.</p>
               </center>
     
-            <h3 class="title is-4">Critique models assist the actor in better handling challenging queries.
+            <h3 class="title is-4">Critique-in-the-loop self-improvement balances the solution distribution across difficulty levels,and enhances performance on challenging queries in the test set. 
             </h3>
             <p>
-              The results are illustrated in Figure . is evident that on both the training and test sets of GSM8K and
-              MATH, critique models provide minimal benefit for simpler queries, as the actor model can independently
-              perform well on these cases. However, for more challenging problems, critique models offer significant
-              support, resulting in the overall improved performance. </p>
-            <h3 class="title is-4">Scaling up inference-time computation consistently improves reasoning performance.
+              As shown in Figure 7, we find that our approach samples a higher proportion of solutions for challenging queries during the exploration stage. This significantly balances the training data distribution for the learning stage, effectively mitigating the tail narrowing issue. In Figure 8, we also present the model’s performance on the test set across different difficulty levels, and we observe that our method performs significantly better than the vanilla approach on harder problems, further demonstrating the potential of our approach.</p>
+            <h3 class="title is-4">Combining test-time supervision with training-time supervisions yields more performance gains.
             </h3>
+            <center>
+              <table>
+                <tr>
+                  <th>Training-time</th>
+                  <th>Test-time</th>
+                  <th colspan="3">GSM8K</th>
+                  <th colspan="3">MATH</th>
+                </tr>
+                <tr>
+                  <th>Training-time</th>
+                  <th>Test-time</th>
+                  <th>Acc</th>
+                  <th>Pass@5</th>
+                  <th>MV@5</th>
+                  <th>Acc</th>
+                  <th>Pass@5</th>
+                  <th>MV@5</th>
+                </tr>
+                <tr>
+                  <td>response only</td>
+                  <td>response only</td>
+                  <td>54.8</td>
+                  <td>75.2</td>
+                  <td>54.5</td>
+                  <td>17.2</td>
+                  <td>35.0</td>
+                  <td>15.6</td>
+                </tr>
+                <tr>
+                  <td>Supervised Fine-tuning</td>
+                  <td>w/ critique model</td>
+                  <td>63.3</td>
+                  <td>87.6</td>
+                  <td>75.4</td>
+                  <td>24.3</td>
+                  <td>47.4</td>
+                  <td>30.7</td>
+                </tr>
+                <tr>
+                  <td>Supervised Fine-tuning</td>
+                  <td>response only</td>
+                  <td>54.2</td>
+                  <td>73.1</td>
+                  <td>53.4</td>
+                  <td>18.1</td>
+                  <td>32.4</td>
+                  <td>16.6</td>
+                </tr>
+                <tr>
+                  <td>Self-Correction Fine-tuning</td>
+                  <td>self-correction</td>
+                  <td>60.1</td>
+                  <td>81.5</td>
+                  <td>67.2</td>
+                  <td>24.2</td>
+                  <td>41.7</td>
+                  <td>26.1</td>
+                </tr>
+                <tr>
+                  <td>Self-Correction Fine-tuning</td>
+                  <td>response only</td>
+                  <td>64.6</td>
+                  <td>83.4</td>
+                  <td>70.6</td>
+                  <td>20.2</td>
+                  <td>38.5</td>
+                  <td>23.0</td>
+                </tr>
+                <tr>
+                  <td>Vanilla Self-Improve</td>
+                  <td>w/ critique model</td>
+                  <td>70.2</td>
+                  <td>90.8</td>
+                  <td>78.2</td>
+                  <td>27.0</td>
+                  <td>48.8</td>
+                  <td>31.4</td>
+                </tr>
+                <tr>
+                  <td>Vanilla Self-Improve</td>
+                  <td>response only</td>
+                  <td>75.5</td>
+                  <td>89.1</td>
+                  <td>80.1</td>
+                  <td>31.3</td>
+                  <td>51.0</td>
+                  <td>35.1</td>
+                </tr>
+                <tr>
+                  <td>Critique-in-the-loop Self-Improve</td>
+                  <td>w/ critique model</td>
+                  <td>75.8</td>
+                  <td>91.8</td>
+                  <td>82.8</td>
+                  <td>31.4</td>
+                  <td>53.1</td>
+                  <td>36.8</td>
+                </tr>
+              </table>
+              
+              <p>Evaluation results of combining different training-time and test-time methods. During training, "Self-Correction Fine-tuning" refers to training a model with both reasoning and correction capabilities. For test-time methods, "response only" represents the actor model generating a response without additional correction or critique; "w/ critique model" indicates using a critique model at test-time to provide feedback, enabling the actor to perform refinement; and "self-correction" refers to the model generating a response and then performing correction by itself. The best performance is in bold and underlined, while the second-best performance is underlined.From the results, we observe that both test-time and train-time critique supervision provide consistent improvements, and the combination of the two achieves the best performance.</p>
+
+            </center>
             <p>
-              We investigate whether incorporating critique models can further elevate the reasoning performance ceiling
-              as test-time computation scales.As shown in Figure , without critique models, Maj@K performance improves
-              with increased computation but quickly plateau.In contrast, when critique models are utilized during
-              test-time, performance surpasses the baseline by a significant margin under the same computation
-              budget—showing a 12.4% improvement on GSM8K and a 14.8% improvement on MATH. </p>
-          </div>
+              
+              Evaluation results shown in Table 3 reveal that: (1) Integrating critique models during test-time consistently enhances performance under identical training conditions, particularly when critique supervision is not used during training. For example, applying critique models at test-time increases the MV@5 performance of SFT on GSM8K and MATH by $10.9$ and $15.1$ points, respectively. (2) When critique models are used during training, the additional benefit of test-time critique supervision becomes marginal, suggesting successful “distillation” of critique models into the actor during training. (3) The self-correction baseline underperforms compared to utilizing separate critique models, aligning findings in prior work that models struggle to accurately evaluate and refine their outputs without external feedback. Moreover, training a single model to handle both reasoning and correction capabilities may introduce conflicts, leading to performance degradation. (4) Compared to the traditional strategy of vanilla self-improvement + response-only, which increases computation during training, the approach of supervised fine-tuning + test-time critique supervision reduces training computation while increasing test-time computation and achieves better performance, particularly on the more challenging MATH dataset. This aligns with prior work highlighting the benefits of enhancing test-time computation.
+              </p>
+            </div>
         </div>
       </div>
     </div>
